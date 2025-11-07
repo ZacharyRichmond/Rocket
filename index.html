@@ -55,7 +55,7 @@ var canvas = document.getElementById("myCanvas");
 
   function draw() {
     c.clearRect(0, 0, canvas.width, canvas.height);
- c.rect(cx(rocket.pos.x-0.5*rocketWidth),cy(rocket.pos.y+0.5*rocketHeight), rocketWidth,rocketHeight);
+ c.rect(cx(rocket.pos.x)-0.5*rocketWidth,cy(rocket.pos.y)-0.5*rocketHeight, rocketWidth,rocketHeight);
 c.stroke();
   }
 
