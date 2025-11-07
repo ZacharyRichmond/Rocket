@@ -86,12 +86,12 @@ c.closePath();
     fuel-=averageThrust*dt
     }
     if(rocket.vel.y>0){
-    rocket.vel.y-=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*(surfaceArea+airBrakeAre*airBrakeOn))/mass;
+    rocket.vel.y-=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*(surfaceArea+airBrakeArea*airBrakeOn))/mass;
     }
     else{
     rocket.vel.y+=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*surfaceArea)/mass
     }
-    if(fuel=0)
+   // if(fuel=0)
    rocket.pos.x += rocket.vel.x * dt;
   rocket.pos.y+= rocket.vel.y * dt;
      if (rocket.pos.y < 0.0+rocketHeight) {
