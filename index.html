@@ -47,57 +47,65 @@ var canvas = document.getElementById("myCanvas");
 
   var gravity = { x: 0.0, y: -9.8};
   var dt = 1.0 / 60.0;
-    var rocket = {pos:{x:100.0,y:5.0},vel:{x:0.0,y:0.0}};
+  var time=0;
+    var rocket = {pos:{x:5.0,y:7},vel:{x:0.0,y:0.0}};
 
-    var rocketHeight = 5;
-    var rocketWidth = 4;
+    var rocketHeight = 2;
+    var rocketWidth = 1;
+    var mass = 0.5;
+    //in impulse remaining
+    var fuel = 50;
+    var burnTime=1.3
+    var averageThrust=fuel/1.3;
+    var surfaceArea=0.00387096;
+    var airBrakeArea=0.00116129;
+    var airBrakeOn=0;
+    var CD=0.7;
+    var density=1.225;
   // drawing -------------------------------------------------------
 
   function draw() {
     c.clearRect(0, 0, canvas.width, canvas.height);
- //c.rect((rocket.pos.x-0.5*rocketWidth) * cScale,canvas.height - (rocket.pos.y+0.5*rocketHeight) * cScale, rocketWidth,rocketHeight);
-     c.rect(98.0,10, rocketWidth,rocketHeight);
+   c.beginPath();
+     c.fillText(String(rocket.pos.y-2), 10, 50);
+       c.fillText(String(rocket.vel.y), 10, 60);
+ c.rect(cX(rocket.pos),cY(rocket.pos),rocketWidth*cScale,rocketHeight*cScale);
+   //c.rect(98.0,10, rocketWidth,rocketHeight);
 c.stroke();
+c.closePath();
   }
 
   // simulation ----------------------------------------------------
 
  var down = false;
     var up =false;
-function acceleration(){
-  
-}
   function simulate() {
-  
-    rocket.vel.x += gravity.x * dt;
     rocket.vel.y += gravity.y * dt;
-    rocket.pos.x += rocket.vel.x * dt;
-   rocket.pos.y+= rocketvel.y * dt;
-/*
-   if (ball[i].pos.x < 0.0+ball[i].r) {
-   ball[i].pos.x = 0.0+ball[i].r;
-      ball[i].vel.x = 0;
+    if(fuel>0){
+    rocket.vel.y+=dt*averageThrust/mass
+    fuel-=averageThrust*dt
     }
-    if (ball[i].pos.x > simWidth-ball[i].r) {
-      ball[i].pos.x = simWidth-ball[i].r;
-      ball[i].vel.x= 0;
+    if(rocket.vel.y>0){
+    rocket.vel.y-=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*(surfaceArea+airBrakeAre*airBrakeOn))/mass;
     }
-    if (ball[i].pos.y > simHeight-ball[i].r) {
-      ball[i].pos.y =simHeight-ball[i].r;
-      ball[i].vel.y = 0;
-        -ball[i].vel.y;
+    else{
+    rocket.vel.y+=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*surfaceArea)/mass
     }
-   */
-     if (rocket.pos.y < 0.0+rocketHeight/2) {
-      rocket.pos.y = 0.0+rocketHeight/2;
+    if(fuel=0)
+   rocket.pos.x += rocket.vel.x * dt;
+  rocket.pos.y+= rocket.vel.y * dt;
+     if (rocket.pos.y < 0.0+rocketHeight) {
+      rocket.pos.y = 0.0+rocketHeight;
       rocket.vel.y =0;
     }
   }
 
   // make browser to call us repeatedly -----------------------------------
+  var up = false;
+  var down  =false;
   function update() {
-    
-  /* document.addEventListener('keydown', function(event) {
+    /*
+   document.addEventListener('keydown', function(event) {
        else if(event.keyCode == 38) {
           
           up=true;
@@ -117,9 +125,10 @@ function acceleration(){
           down=false;
         }
      });*/
-    //simulate();
-   //   acceleration();
+
+    simulate();
     draw();
+    time+=dt;
     requestAnimationFrame(update);
   }
  update();
@@ -128,4 +137,3 @@ function acceleration(){
 
 </body>
 </html>
-
