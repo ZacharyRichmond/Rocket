@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Rock</title>
+<title>Rocket</title>
 <!-- <link rel="icon" type="image/x-icon" href="./images/favicon.ico"> -->
 </head>
 <body>
@@ -55,7 +55,8 @@ var canvas = document.getElementById("myCanvas");
 
   function draw() {
     c.clearRect(0, 0, canvas.width, canvas.height);
- c.rect((rocket.pos.x-0.5*rocketWidth) * cScale,canvas.height - (rocket.pos.y+0.5*rocketHeight) * cScale, rocketWidth,rocketHeight);
+ //c.rect((rocket.pos.x-0.5*rocketWidth) * cScale,canvas.height - (rocket.pos.y+0.5*rocketHeight) * cScale, rocketWidth,rocketHeight);
+     c.rect(98.0,10, rocketWidth,rocketHeight);
 c.stroke();
   }
 
