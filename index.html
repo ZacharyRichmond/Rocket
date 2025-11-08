@@ -75,7 +75,7 @@ var scale=12;
        c.fillText("time:   " + String(time), 10, 60);
           c.fillText("apogee/peak height: " + String(peakHeight), 10, 70);
           c.fillText("predicted apogee:  "+String( findApogee(rocket.pos.y,rocket.vel.y,angle)),10,80);
-           c.fillText("fuel:  " + String(fuel.toFixed(3)),10,90);
+           c.fillText("fuel (measured in total remaining impulse):  " + String(fuel.toFixed(3)),10,90);
            c.fillText("possible air break changes:  " + (count-2),10,100);
             c.fillText("velocity:  " + rocket.vel.y,10,110);
 var displayRocket ={x:rocket.pos.x,y:(rocket.pos.y)/scale+rocketHeight}; c.rect(cX(displayRocket),cY(displayRocket),rocketWidth*cScale,rocketHeight*cScale);
