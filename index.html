@@ -49,10 +49,10 @@ var canvas = document.getElementById("myCanvas");
   var dt = 1.0 / 100.0;
   var time=0;
     var rocket = {pos:{x:15
-    ,y:7},vel:{x:0.0,y:0.0}};
+    ,y:0},vel:{x:0.0,y:0.0}};
 var scale=12;
-    var rocketHeight = 2/scale;
-    var rocketWidth = 1/scale;
+    var rocketHeight =6/scale;
+    var rocketWidth = 3/scale;
     var mass = 0.5;
     //in impulse remaining
     var fuel = 50;
@@ -75,9 +75,10 @@ var scale=12;
           c.fillText("apogee/peak height: " + String(peakHeight), 10, 70);
           c.fillText("predicted apogee:  "+String( findApogee(rocket.pos.y,rocket.vel.y,angle)),10,80);
            c.fillText("fuel:  " + String(fuel),10,90);
-var displayRocket ={x:rocket.pos.x,y:rocket.pos.y/scale}; c.rect(cX(displayRocket),cY(displayRocket),rocketWidth*cScale,rocketHeight*cScale);
+var displayRocket ={x:rocket.pos.x,y:(rocket.pos.y)/scale+rocketHeight}; c.rect(cX(displayRocket),cY(displayRocket),rocketWidth*cScale,rocketHeight*cScale);
+var displayAirbrake = {x:rocket.pos.x-1.5*rocketWidth,y:(rocket.pos.y)/scale+0.6*rocketHeight};
 if(airBrakeOn>0){
-c.rect(cX(displayRocket),cY(displayRocket),2*rocketWidth*cScale,2*rocketHeight*cScale);
+c.rect(cX(displayAirbrake),cY(displayAirbrake),4*rocketWidth*cScale,0.5*rocketHeight*cScale);
 }
    //c.rect(98.0,10, rocketWidth,rocketHeight);
 c.stroke();
@@ -126,14 +127,14 @@ c.closePath();
    }
    rocket.pos.x += rocket.vel.x * dt;
    if(rocket.pos.y>180){
-   angle=0.3;
+   angle=0.4;
    }
   rocket.pos.y+= Math.cos(angle)*rocket.vel.y * dt;
   if(rocket.pos.y>peakHeight){
   peakHeight=rocket.pos.y;
   }
-     if (rocket.pos.y < rocketHeight*12) {
-      rocket.pos.y = rocketHeight*12;
+     if (rocket.pos.y < 0) {
+      rocket.pos.y = 0;
       rocket.vel.y =0;
     }
   }
