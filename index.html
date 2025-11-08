@@ -127,7 +127,7 @@ c.closePath();
    }
    rocket.pos.x += rocket.vel.x * dt;
    if(rocket.pos.y>180){
-   angle=0.4;
+   angle=0;
    }
   rocket.pos.y+= Math.cos(angle)*rocket.vel.y * dt;
   if(rocket.pos.y>peakHeight){
