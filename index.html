@@ -63,7 +63,7 @@ var scale=12;
     var airBrakeOn=0;
     var CD=0.7;
     var density=1.225;
-    var targetApogee=220;
+    var targetApogee=215;
     var peakHeight=0;
   // drawing -------------------------------------------------------
 
@@ -117,14 +117,23 @@ c.closePath();
     rocket.vel.y+=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*surfaceArea)/mass
     }
      rocket.vel.y += gravity.y * dt;
-     if(time>count*0){
+     if(time>count*0.5){
      count++
    if(fuel<=0&&rocket.vel.y>0){
+   var dif=0;
    if(findApogee(rocket.pos.y,rocket.vel.y,angle)>targetApogee){
+   dif=findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee;
    airBrakeOn=1;
+   if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
+   airBrakeOn=0;
+   }
    }
    else if(findApogee(rocket.pos.y,rocket.vel.y,angle)<=targetApogee){
+    dif=Math.abs(findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee);
    airBrakeOn=0;
+     if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
+   airBrakeOn=1;
+   }
    }
    }
    }
