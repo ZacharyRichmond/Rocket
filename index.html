@@ -63,7 +63,7 @@ var scale=12;
     var airBrakeOn=0;
     var CD=0.7;
     var density=1.225;
-    var targetApogee=215;
+    var targetApogee=220;
     var peakHeight=0;
   // drawing -------------------------------------------------------
 
@@ -76,6 +76,8 @@ var scale=12;
           c.fillText("apogee/peak height: " + String(peakHeight), 10, 70);
           c.fillText("predicted apogee:  "+String( findApogee(rocket.pos.y,rocket.vel.y,angle)),10,80);
            c.fillText("fuel:  " + String(fuel),10,90);
+           c.fillText("count:  " + count,10,100);
+            c.fillText("time2:  " + time.toFixed(1),10,110);
 var displayRocket ={x:rocket.pos.x,y:(rocket.pos.y)/scale+rocketHeight}; c.rect(cX(displayRocket),cY(displayRocket),rocketWidth*cScale,rocketHeight*cScale);
 var displayAirbrake = {x:rocket.pos.x-1.5*rocketWidth,y:(rocket.pos.y)/scale+0.6*rocketHeight};
 if(airBrakeOn>0){
@@ -115,6 +117,8 @@ c.closePath();
     rocket.vel.y+=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*surfaceArea)/mass
     }
      rocket.vel.y += gravity.y * dt;
+     if(time>count*0){
+     count++
    if(fuel<=0&&rocket.vel.y>0){
    if(findApogee(rocket.pos.y,rocket.vel.y,angle)>targetApogee){
    airBrakeOn=1;
@@ -123,9 +127,11 @@ c.closePath();
    airBrakeOn=0;
    }
    }
-   else if(rocket.vel.y<0){
+   }
+   if(rocket.vel.y<0){
    airBrakeOn=0
    }
+   
    rocket.pos.x += rocket.vel.x * dt;
    if(rocket.pos.y>180){
    angle=0;
@@ -143,6 +149,7 @@ c.closePath();
   // make browser to call us repeatedly -----------------------------------
   var up = false;
   var down  =false;
+  var count=0;
   function update() {
     
    document.addEventListener('keydown', function(event) {
