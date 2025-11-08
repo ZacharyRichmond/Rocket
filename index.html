@@ -128,6 +128,23 @@ c.closePath();
    }
    }
    }
+    //alternate method, maxes idea
+    /*var dif=0;
+   if(findApogee(rocket.pos.y,rocket.vel.y,angle)>targetApogee){
+   dif=findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee;
+   airBrakeOn=1;
+   if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
+   airBrakeOn=0;
+   }
+   }
+   else if(findApogee(rocket.pos.y,rocket.vel.y,angle)<=targetApogee){
+    dif=Math.abs(findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee);
+   airBrakeOn=0;
+     if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
+   airBrakeOn=1;
+   }
+   }*/
+    
    if(rocket.vel.y<0){
    airBrakeOn=0
    }
