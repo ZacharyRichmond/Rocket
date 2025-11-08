@@ -94,6 +94,7 @@ c.closePath();
     var up =false;
     var angle=0;
     
+    //in actual flight, CD will be approximated at each point probably
     function findApogee(height,yvel,a){
     var altitude=height;
     var vel =yvel;
@@ -104,81 +105,83 @@ c.closePath();
   }
   return altitude;
     }
+
+    
     
   function simulate() {
+    //drag
+    if(rocket.vel.y>0){
+      //ascending
+    rocket.vel.y-=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*(surfaceArea+airBrakeArea*airBrakeOn))/mass;
+    }
+    else{
+      //falling (no parachute)
+    rocket.vel.y+=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*surfaceArea)/mass
+    }
+    //gravity
+     rocket.vel.y += gravity.y * dt;
+     //thrust
     if(fuel>0){
     rocket.vel.y+=dt*averageThrust/mass
     fuel-=averageThrust*dt
     }
-    if(rocket.vel.y>0){
-    rocket.vel.y-=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*(surfaceArea+airBrakeArea*airBrakeOn))/mass;
-    }
-    else{
-    rocket.vel.y+=dt*(0.5*CD*density*rocket.vel.y*rocket.vel.y*surfaceArea)/mass
-    }
-     rocket.vel.y += gravity.y * dt;
-     if(time>count*0.5){
+    //every 0.5 seconds choose airbrake position
+ if(time>count*0.5){
      count++
-   if(fuel<=0&&rocket.vel.y>0){
-   var dif=0;
-   if(findApogee(rocket.pos.y,rocket.vel.y,angle)>targetApogee){
-   dif=findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee;
-   airBrakeOn=1;
-   if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
-   airBrakeOn=0;
+  //only deploy airbrakes if rising and post burn     
+      if(fuel<=0&&rocket.vel.y>0){
+      var dif=0;
+         if(findApogee(rocket.pos.y,rocket.vel.y,angle)>targetApogee){
+             dif=findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee;
+             airBrakeOn=1;
+           
+               if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
+                 //delete if using other method
+                   airBrakeOn=0;
+               }
+       }
+       else if(findApogee(rocket.pos.y,rocket.vel.y,angle)<=targetApogee){
+            dif=Math.abs(findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee);
+             airBrakeOn=0;
+              if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
+                //delete if using other method
+                   airBrakeOn=1;
+                 }
+         }
    }
    }
-   else if(findApogee(rocket.pos.y,rocket.vel.y,angle)<=targetApogee){
-    dif=Math.abs(findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee);
-   airBrakeOn=0;
-     if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
-   airBrakeOn=1;
-   }
-   }
-   }
-   }
-    //alternate method, maxes idea
-    /*var dif=0;
-   if(findApogee(rocket.pos.y,rocket.vel.y,angle)>targetApogee){
-   dif=findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee;
-   airBrakeOn=1;
-   if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
-   airBrakeOn=0;
-   }
-   }
-   else if(findApogee(rocket.pos.y,rocket.vel.y,angle)<=targetApogee){
-    dif=Math.abs(findApogee(rocket.pos.y,rocket.vel.y,angle)-targetApogee);
-   airBrakeOn=0;
-     if(Math.abs(targetApogee-findApogee(rocket.pos.y,rocket.vel.y,angle))>dif){
-   airBrakeOn=1;
-   }
-   }*/
+    
+   //no airbrakes when descending ever
     
    if(rocket.vel.y<0){
    airBrakeOn=0
    }
    
    rocket.pos.x += rocket.vel.x * dt;
+    //rough wind simulation, currently set to 0.
    if(rocket.pos.y>180){
    angle=0;
    }
+    //angle is wind
   rocket.pos.y+= Math.cos(angle)*rocket.vel.y * dt;
+//keep track of apogee
   if(rocket.pos.y>peakHeight){
   peakHeight=rocket.pos.y;
   }
+    //dont fall through ground
      if (rocket.pos.y < 0) {
       rocket.pos.y = 0;
       rocket.vel.y =0;
     }
   }
 
-  // make browser to call us repeatedly -----------------------------------
   var up = false;
   var down  =false;
   var count=0;
   function update() {
     
    document.addEventListener('keydown', function(event) {
+     //ignore the following few lines, potential feature not yet implemented
         if(event.keyCode == 38) {
           
           up=true;
@@ -200,6 +203,8 @@ c.closePath();
           down=false;
         }
      });
+    
+    //Main loop
     simulate();
     draw();
     time+=dt;
