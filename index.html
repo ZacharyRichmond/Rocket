@@ -85,22 +85,22 @@ var scale=12;
             c.fillText("300m  " ,10,-10+canvas.height - cScale*(5+(300/scale2)));
             c.strokeStyle = "black";
            
-            if(time<15){
+            if(time<14){
         
-            heightData.push({x:1+heightData.length*0.5/scale2,y:5+rocket.pos.y/scale2});
-        if(rocket.vel.y>-5){ apogeeData.push({x:1+apogeeData.length*0.5/scale2,y:5+findApogee(rocket.pos.y,rocket.vel.y,angle)/scale2});}
-            }
+              heightData.push({x:1+heightData.length*0.5/scale2,y:5+rocket.pos.y/scale2});
+                  if(rocket.vel.y>-5){ 
+                    apogeeData.push({x:1+apogeeData.length*0.5/scale2,y:5+findApogee(rocket.pos.y,rocket.vel.y,angle)/scale2});}
+                      }
             for(var  i=0;i<heightData.length;i++){
             c.rect(cX(heightData[i]),cY(heightData[i]),cScale*0.5/scale2,cScale*0.5/scale2);
             }
             c.stroke();
             c.beginPath();
 c.strokeStyle = "red";
-for(var  i=0;i<apogeeData.length;i++){
-           
+          for(var  i=0;i<apogeeData.length;i++){
              c.rect(cX(apogeeData[i]),cY(apogeeData[i]),cScale*0.5/scale2,cScale*0.5/scale2);
             }
-            c.moveTo(cScale*1, 1+canvas.height - 5 * cScale);
+c.moveTo(cScale*1, 1+canvas.height - 5 * cScale);
 c.lineTo(25*cScale, 1+canvas.height - 5 * cScale);
 c.moveTo(cScale*1, 1+canvas.height - 5 * cScale);
  c.lineTo(1*cScale, 1+canvas.height - cScale*(5+(300/scale2)));
