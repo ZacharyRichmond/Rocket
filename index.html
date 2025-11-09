@@ -23,6 +23,7 @@ var canvas = document.getElementById("myCanvas");
   var simHeight = canvas.height / cScale;
   const heightData=[];
   const apogeeData=[];
+  const velocityData=[];
 
     function dot(v1,v2){
       return v1.x*v2.x+v1.y*v2.y;
@@ -88,6 +89,7 @@ var scale=12;
             if(time<14){
         
               heightData.push({x:1+heightData.length*0.5/scale2,y:5+rocket.pos.y/scale2});
+               velocityData.push({x:1+velocityData.length*0.5/scale2,y:5+rocket.vel.y/scale2});
                   if(rocket.vel.y>-5){ 
                     apogeeData.push({x:1+apogeeData.length*0.5/scale2,y:5+findApogee(rocket.pos.y,rocket.vel.y,angle)/scale2});}
                       }
@@ -96,9 +98,15 @@ var scale=12;
             }
             c.stroke();
             c.beginPath();
-c.strokeStyle = "red";
+c.strokeStyle = "green";
           for(var  i=0;i<apogeeData.length;i++){
              c.rect(cX(apogeeData[i]),cY(apogeeData[i]),cScale*0.5/scale2,cScale*0.5/scale2);
+            }
+            c.stroke();
+            c.beginPath();
+c.strokeStyle = "red";
+            for(var  i=0;i<velocityData.length;i++){
+             c.rect(cX(velocityData[i]),cY(velocityData[i]),cScale*0.5/scale2,cScale*0.5/scale2);
             }
 c.moveTo(cScale*1, 1+canvas.height - 5 * cScale);
 c.lineTo(25*cScale, 1+canvas.height - 5 * cScale);
